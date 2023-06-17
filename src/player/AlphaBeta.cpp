@@ -42,7 +42,7 @@ void write_valid_spot(std::ofstream& fout) {
   // Keep updating the output until getting killed.
   while(true) {
     // Choose a MiniMax spot.
-    auto move = AlphaBeta::get_move(root, 6, !root->player);
+    auto move = AlphaBeta::get_move(root, 7, root->player == 0);
     fout << move.first.first << " " << move.first.second << " "\
          << move.second.first << " " << move.second.second << std::endl;
     
