@@ -15,10 +15,14 @@
 int State::evaluate(){
   // [TODO] design your own evaluation function
   int H = 0;
-  std::map<int, int> weight = {{1,1}, {2,4}, {3,16}, {4,64}, {5,256}, {6,1024}};
+  std::map<int, int> weight = {{0,0}, {1,50}, {2,200}, {3,600}, {4,800}, {5,2000}, {6,10000}};
   for(int i = 0; i < BOARD_H; ++i)
-    for(int j = 0; j < BOARD_W; ++j)
-      H += weight[this->board.board[this->player][i][j]];
+    for(int j = 0; j < BOARD_W; ++j){
+      if(this->player == 0)
+        H += weight[this->board.board[0][i][j]];
+      else
+        H -= weight[this->board.board[0][i][j]];
+    }
   return H;
 }
 

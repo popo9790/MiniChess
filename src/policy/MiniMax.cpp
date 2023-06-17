@@ -15,18 +15,16 @@
 const int INF = __INT32_MAX__;
 
 int getMax(const int lhs, const int rhs){
-    return lhs > rhs ? rhs : lhs;
+    return lhs < rhs ? rhs : lhs;
 }
 int getMin(const int lhs, const int rhs){
-    return lhs < rhs ? rhs : lhs;
+    return lhs > rhs ? rhs : lhs;
 }
 
 int getHeuristicMiniMax(State *state, int depth, bool MaximizingPlayer){
-    if(depth == 0)
+    if(depth == 0 || state->game_state == WIN || state->game_state == DRAW)
         return state->evaluate();
     
-    if(!state->legal_actions.size())
-        state->get_legal_actions();
     if(MaximizingPlayer){
         int val = INF * -1;
         for(auto it = state->legal_actions.begin(); it != state->legal_actions.end(); ++it){
@@ -47,14 +45,24 @@ Move MiniMax::get_move(State *state, int depth, bool MaximizingPlayer){
     if(!state->legal_actions.size())
         state->get_legal_actions();
     
+    int maxCheck = -1 * INF;
     int minCheck = INF;
     Move next;
     for(auto it = state->legal_actions.begin(); it != state->legal_actions.end(); ++it){
-        int tmp = getHeuristicMiniMax(state->next_state(*it), depth, MaximizingPlayer);
-        if(tmp < minCheck)
-        {
-            minCheck = tmp;
-            next = *it;
+        int tmp = getHeuristicMiniMax(state->next_state(*it), depth - 1, MaximizingPlayer);
+        if(MaximizingPlayer){
+            if(tmp > maxCheck)
+            {
+                maxCheck = tmp;
+                next = *it;
+            }
+        }
+        else{
+            if(tmp < minCheck)
+            {
+                minCheck = tmp;
+                next = *it;
+            }
         }
     }
     return next;
