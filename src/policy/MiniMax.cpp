@@ -22,7 +22,18 @@ int getMin(const int lhs, const int rhs){
 }
 
 int getHeuristicMiniMax(State *state, int depth, bool MaximizingPlayer){
-    if(depth == 0 || state->game_state == WIN || state->game_state == DRAW)
+    if(!state->legal_actions.size())
+        state->get_legal_actions();
+
+    if(state->game_state == WIN)
+    {
+        if(MaximizingPlayer)
+            return INF;
+        else
+            return -1 * INF;
+    }
+
+    if(depth == 0  || state->legal_actions.size() == 0 || state->game_state == DRAW)
         return state->evaluate();
     
     if(MaximizingPlayer){
