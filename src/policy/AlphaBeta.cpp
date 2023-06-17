@@ -29,7 +29,7 @@ int getHeuristicAlphaBeta(State *state, int depth, int alpha, int beta, bool Max
         int val = INF * -1;
         for(auto it = state->legal_actions.begin(); it != state->legal_actions.end(); ++it){
             val = getMax_AlphaBeta(val, getHeuristicAlphaBeta(state->next_state(*it), depth - 1, alpha, beta, false));
-            alpha = getMin_AlphaBeta(val, alpha);
+            alpha = getMax_AlphaBeta(val, alpha);
             if(alpha >= beta)
                 break;
         }
@@ -38,7 +38,7 @@ int getHeuristicAlphaBeta(State *state, int depth, int alpha, int beta, bool Max
     else{
         int val = INF;
         for(auto it = state->legal_actions.begin(); it != state->legal_actions.end(); ++it){
-            val = getMax_AlphaBeta(val, getHeuristicAlphaBeta(state->next_state(*it), depth - 1, alpha, beta, true));
+            val = getMin_AlphaBeta(val, getHeuristicAlphaBeta(state->next_state(*it), depth - 1, alpha, beta, true));
             beta = getMin_AlphaBeta(val, beta);
             if(alpha >= beta)
                 break;
@@ -53,7 +53,7 @@ Move AlphaBeta::get_move(State *state, int depth, bool MaximizingPlayer){
     
     int maxCheck = -1 * INF;
     int minCheck = INF;
-    Move next;
+    Move next = *state->legal_actions.begin();
     for(auto it = state->legal_actions.begin(); it != state->legal_actions.end(); ++it){
         int tmp = getHeuristicAlphaBeta(state->next_state(*it), depth - 1, maxCheck, minCheck, MaximizingPlayer);
         if(MaximizingPlayer){
