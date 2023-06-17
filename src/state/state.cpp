@@ -1,4 +1,5 @@
 #include <iostream>
+#include <map>
 #include <sstream>
 #include <cstdint>
 
@@ -13,7 +14,12 @@
  */
 int State::evaluate(){
   // [TODO] design your own evaluation function
-  return 0;
+  int H = 0;
+  std::map<int, int> weight = {{1,1}, {2,4}, {3,16}, {4,64}, {5,256}, {6,1024}};
+  for(int i = 0; i < BOARD_H; ++i)
+    for(int j = 0; j < BOARD_W; ++j)
+      H += weight[this->board.board[this->player][i][j]];
+  return H;
 }
 
 
@@ -23,6 +29,7 @@ int State::evaluate(){
  * @param move 
  * @return State* 
  */
+
 State* State::next_state(Move move){
   Board next = this->board;
   Point from = move.first, to = move.second;
@@ -207,7 +214,7 @@ void State::get_legal_actions(){
       }
     }
   }
-  std::cout << "\n";
+  //std::cout << "\n";
   this->legal_actions = all_actions;
 }
 
