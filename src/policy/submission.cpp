@@ -1,7 +1,7 @@
 #include <cstdlib>
 
 #include "../state/state.hpp"
-#include "./AlphaBeta.hpp"
+#include "./submission.hpp"
 
 
 /**
@@ -55,7 +55,7 @@ int getHeuristicAlphaBeta(State *state, int depth, int alpha, int beta){
     }
 }
 
-Move AlphaBeta::get_move(State *state, int depth, bool MaximizingPlayer){
+Move submission::get_move(State *state, int depth, bool MaximizingPlayer){
     if(!state->legal_actions.size())
         state->get_legal_actions();
     
