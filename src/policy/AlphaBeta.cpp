@@ -63,7 +63,7 @@ Move AlphaBeta::get_move(State *state, int depth, bool MaximizingPlayer){
     int minCheck = INF;
     Move next = *state->legal_actions.begin();
     for(auto it = state->legal_actions.begin(); it != state->legal_actions.end(); ++it){
-        int tmp = getHeuristicAlphaBeta(state->next_state(*it), depth - 1, maxCheck, minCheck);
+        int tmp = getHeuristicAlphaBeta(state->next_state(*it), depth, maxCheck, minCheck);
         if(MaximizingPlayer){
             if(tmp > maxCheck)
             {
