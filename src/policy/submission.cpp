@@ -14,14 +14,14 @@
 
 const int INF = __INT32_MAX__;
 
-int getMax_AlphaBeta(const int lhs, const int rhs){
+int getMax_AlphaBeta_s(const int lhs, const int rhs){
     return lhs <= rhs ? rhs : lhs;
 }
-int getMin_AlphaBeta(const int lhs, const int rhs){
+int getMin_AlphaBeta_s(const int lhs, const int rhs){
     return lhs >= rhs ? rhs : lhs;
 }
 
-int getHeuristicAlphaBeta(State *state, int depth, int alpha, int beta){
+int getHeuristicAlphaBeta_s(State *state, int depth, int alpha, int beta){
     if(state->game_state == WIN)
     {
         if(state->player == 0)
@@ -36,8 +36,8 @@ int getHeuristicAlphaBeta(State *state, int depth, int alpha, int beta){
     if(state->player == 0){
         int val = INF * -1;
         for(auto it = state->legal_actions.begin(); it != state->legal_actions.end(); ++it){
-            val = getMax_AlphaBeta(val, getHeuristicAlphaBeta(state->next_state(*it), depth - 1, alpha, beta));
-            alpha = getMax_AlphaBeta(val, alpha);
+            val = getMax_AlphaBeta_s(val, getHeuristicAlphaBeta_s(state->next_state(*it), depth - 1, alpha, beta));
+            alpha = getMax_AlphaBeta_s(val, alpha);
             if(alpha >= beta)
                 break;
         }
@@ -46,8 +46,8 @@ int getHeuristicAlphaBeta(State *state, int depth, int alpha, int beta){
     else{
         int val = INF;
         for(auto it = state->legal_actions.begin(); it != state->legal_actions.end(); ++it){
-            val = getMin_AlphaBeta(val, getHeuristicAlphaBeta(state->next_state(*it), depth - 1, alpha, beta));
-            beta = getMin_AlphaBeta(val, beta);
+            val = getMin_AlphaBeta_s(val, getHeuristicAlphaBeta_s(state->next_state(*it), depth - 1, alpha, beta));
+            beta = getMin_AlphaBeta_s(val, beta);
             if(alpha >= beta)
                 break;
         }
@@ -63,7 +63,7 @@ Move submission::get_move(State *state, int depth, bool MaximizingPlayer){
     int minCheck = INF;
     Move next = *state->legal_actions.begin();
     for(auto it = state->legal_actions.begin(); it != state->legal_actions.end(); ++it){
-        int tmp = getHeuristicAlphaBeta(state->next_state(*it), depth, maxCheck, minCheck);
+        int tmp = getHeuristicAlphaBeta_s(state->next_state(*it), depth, maxCheck, minCheck);
         if(MaximizingPlayer){
             if(tmp > maxCheck)
             {

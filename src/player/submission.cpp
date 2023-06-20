@@ -38,14 +38,15 @@ void read_board(std::ifstream& fin) {
  * 
  * @param fout 
  */
+int depth_s = 4;
 void write_valid_spot(std::ofstream& fout) {
   // Keep updating the output until getting killed.
   while(true) {
     // Choose a MiniMax spot.
-    auto move = submission::get_move(root, 6, root->player == 0);
+    auto move = submission::get_move(root, depth_s, root->player == 0);
     fout << move.first.first << " " << move.first.second << " "\
          << move.second.first << " " << move.second.second << std::endl;
-    
+    depth_s++;
     // Remember to flush the output to ensure the last action is written to file.
     fout.flush();
     break;
